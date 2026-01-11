@@ -56,3 +56,32 @@ services:
       - CODESPACE_NAME=$CODESPACE_NAME
     depends_on:
       - "anythink-frontend-react" 
+
+  web:
+    build: .
+    container_name: anythink-web
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./:/src
+    depends_on:
+      - "anythink-backend-node"
+    # Optional: Set environment variables for development
+    environment:
+      - NODE_ENV=development
+      - PORT=3000
+      - MONGODB_URI=mongodb://mongodb-node:27017/anythink-market
+    # Optional: Command to run your development server (adjust as needed)
+    develop:
+      watch:
+        # Action to perform: 'sync' for hot-reloading code changes
+        - action: sync
+          path: ./web # Local path to watch
+          target: /src/web # Corresponding path in the container
+          ignore:
+            - node_modules/ # Optional: Paths to ignore
+        # Action to perform: 'rebuild' for dependency/config changes
+        - action: rebuild
+          path: package.json # Watch a specific file for rebuild trigger
+    command: npm start # This command should ideally enable live reload within your app
+
