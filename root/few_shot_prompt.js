@@ -6,3 +6,8 @@ function toCamelCase(str) {
 }
 
 console.log(toCamelCase("hello world")); // Output: "helloWorld"
+
+
+
+
+
